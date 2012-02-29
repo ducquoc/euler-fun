@@ -21,8 +21,8 @@ public class EulerThread implements Runnable {
     LOG.debug("222 End solving challenge");
 
     long diff = end - start;
-    double seconds = (double) diff / 1000000000.0;
-    LOG.info(String.format("*** Sovled in %s seconds", seconds));
+    double seconds = diff / 1000000000.0;
+    LOG.info("*** Sovled in {} seconds", seconds);
   }
 
 }

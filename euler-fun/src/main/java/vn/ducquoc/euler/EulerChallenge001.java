@@ -1,23 +1,18 @@
 package vn.ducquoc.euler;
 
 /**
- * Finds the sum of all (unique) multiples of 3 and 5 from 1 to 1000.
+ * Finds the sum of all (unique) multiples of 3 and 5 below 1000.
  * 
  * @author ducquoc
  * @see <a>http://projecteuler.net/problem=1</a>
  */
+@SuppressWarnings("unused")
 public class EulerChallenge001 implements EulerChallenge {
 
   public static final long MAX_001 = 1000;
 
-  private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(EulerChallenge001.class);
-
   public void solveMe() {
-    LOG.info("*** Solve it with S.I M.P L.E in mind");
-
-    long result = doStraightImmediately();
-
-    LOG.info(String.format("*** Result is : %d", result));
+    System.out.println(doLessEngineering());
   }
 
   private long doStraightImmediately() { //S.I
@@ -30,14 +25,32 @@ public class EulerChallenge001 implements EulerChallenge {
     return sum;
   }
 
-  @SuppressWarnings("unused")
-  private long doMP() { //M.P
-    return doStraightImmediately();
+  private long doMorePragmatic() { //M.P
+    long sum = 0;
+    for (int i = 3; i < MAX_001; i = i + 3) {
+      sum += i;
+    }
+    for (int i = 5; i < MAX_001; i = i + 5) {
+      if (i % 3 != 0) {
+        sum += i;
+      }
+    }
+    return sum;
   }
 
-  @SuppressWarnings("unused")
-  private long doLE() { //L.E
-    return doStraightImmediately();
+  private long doLessEngineering() { //L.E
+    return sumMultiples(3, MAX_001) + sumMultiples(5, MAX_001) - sumMultiples(15, MAX_001);
+  }
+
+  //
+  // HELPERS
+  //
+  private long sumMultiples(long divisor, long upperBound) {
+    return divisor * sumZeroToN(upperBound / divisor);
+  }
+
+  private long sumZeroToN(long number) {
+    return number * (number - 1) / 2;
   }
 
 }
