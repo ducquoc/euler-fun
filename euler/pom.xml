@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>vn.ducquoc.euler</groupId>
   <artifactId>euler</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   <name>ProjectEuler fun</name>
   <description>See http://github.com/ducquoc/euler-fun</description>
 
@@ -27,38 +27,37 @@
 
   <build>
     <plugins>
-      <!-- to bundle all classes of dependent JAR files -->
+      <!-- to bundle necessary classes of dependent JAR files -->
       <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <archive>
-            <manifest>
-              <mainClass>vn.ducquoc.euler.EulerMain</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.5</version>
         <executions>
           <execution>
-            <id>make-assembly</id>
             <phase>package</phase>
             <goals>
-              <goal>single</goal>
+              <goal>shade</goal>
             </goals>
+            <configuration>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>vn.ducquoc.euler.EulerMain</mainClass>
+                </transformer>
+              </transformers>
+              <!--<shadedArtifactAttached>true</shadedArtifactAttached>-->
+            </configuration>
           </execution>
         </executions>
       </plugin>
 
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
+        <!--<version>2.3.2</version>-->
         <configuration>
           <source>1.5</source>
           <target>1.5</target>
-          <showWarnings>false</showWarnings>
+          <!--<showWarnings>false</showWarnings>-->
         </configuration>
-        <!--<version>2.3.2</version>-->
       </plugin>
     </plugins>
   </build>
