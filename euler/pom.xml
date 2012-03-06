@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>vn.ducquoc.euler</groupId>
   <artifactId>euler</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
   <name>ProjectEuler fun</name>
   <description>See http://github.com/ducquoc/euler-fun</description>
 

@@ -24,7 +24,7 @@ public class EulerChallenge081 implements EulerChallenge {
 
   private long doStraightImmediately() { // S.I
     long minSum = 0;
-    long[][] matrix = loadFileToMatrix(SIZE_081, SIZE_081, "src/main/resources/" + FILENAME_081);
+    long[][] matrix = loadFileToMatrix(SIZE_081, SIZE_081, "/" + FILENAME_081);
 
     long[][] costMatrix = new long[SIZE_081][SIZE_081];
     costMatrix[0][0] = matrix[0][0];

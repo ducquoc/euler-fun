@@ -64,6 +64,15 @@ public class Util {
     return dest;
   }
 
+  public static boolean isPalindrome(String str) {
+    long strLength = str.length();
+    for (int i = 0; i < strLength / 2; i++) {
+      if (str.charAt(i) != str.charAt(str.length() - 1 - i))
+        return false;
+    }
+    return true;
+  }
+
 //  public static void main(String[] args) {
 //    System.out.println(lowestCommonMultiple(0, 1));
 //    System.out.println(lowestCommonMultiple(1, 9));
