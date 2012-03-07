@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>vn.ducquoc.euler-fun</groupId>
   <artifactId>euler-fun</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   <name>Project Euler</name>
   <description>solve challenges in http://projecteuler.net </description>
 
@@ -16,6 +16,11 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-jdk14</artifactId>
       <version>1.6.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jruby</groupId>
+      <artifactId>jruby-complete</artifactId>
+      <version>1.6.5</version>
     </dependency>
   </dependencies>
 
