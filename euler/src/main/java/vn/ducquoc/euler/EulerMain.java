@@ -7,6 +7,16 @@ public class EulerMain {
   public static void main(String[] args) {
     EulerChallenge problem = new EulerChallenge001();
 
+    if (args.length > 0) {
+      String problemClass = EulerChallenge.class.getCanonicalName() + args[0];
+      try {
+        problem = (EulerChallenge) Class.forName(problemClass).newInstance();
+      }
+      catch (Exception ex) {
+        LOG.warn("Wrong number or unable to solve. Now solving: 001");
+      }
+    }
+
     LOG.info("*** Solve it with S.I M.P L.E in mind. Result:");
     new EulerThread(problem).run();
   }

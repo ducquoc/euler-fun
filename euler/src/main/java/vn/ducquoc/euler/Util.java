@@ -43,19 +43,42 @@ public class Util {
     return factors;
   }
 
+  public static long greatestCommonDivisor(long a, long b) {
+    if (b == 0)
+      return a;
+    return greatestCommonDivisor(b, a % b);
+  }
+
+  public static long lowestCommonMultiple(long a, long b) {
+    return a * b / greatestCommonDivisor(a, b);
+  }
+
+  public static List<Long> distinct(List<Long> source) {
+    List<Long> dest = new ArrayList<Long>();
+    for (int i = 0; i < source.size() ; i++) {
+      Long num = source.get(i);
+      if (!dest.contains(num)) {
+        dest.add(num);
+      }
+    }
+    return dest;
+  }
+
+  public static boolean isPalindrome(String str) {
+    long strLength = str.length();
+    for (int i = 0; i < strLength / 2; i++) {
+      if (str.charAt(i) != str.charAt(str.length() - 1 - i))
+        return false;
+    }
+    return true;
+  }
+
 //  public static void main(String[] args) {
-//    System.out.println(primeFactors(0));
-//    System.out.println(primeFactors(1));
-//    System.out.println(primeFactors(2));
-//    System.out.println(primeFactors(3));
-//    System.out.println(primeFactors(4));
-//    System.out.println(primeFactors(5));
-//    System.out.println(primeFactors(6));
-//    System.out.println(primeFactors(7));
-//    System.out.println(primeFactors(8));
-//    System.out.println(primeFactors(9));
-//    System.out.println(primeFactors(100));
-//    System.out.println(primeFactors(-1));
+//    System.out.println(lowestCommonMultiple(0, 1));
+//    System.out.println(lowestCommonMultiple(1, 9));
+//    System.out.println(lowestCommonMultiple(7, 90));
+//    System.out.println(lowestCommonMultiple(35, 90));
+//    System.out.println(lowestCommonMultiple(-2, 90));
 //  }
 
 }
