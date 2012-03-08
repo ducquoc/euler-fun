@@ -5,7 +5,7 @@ public class EulerMain {
   private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(EulerMain.class);
 
   public static void main(String[] args) {
-    EulerChallenge problem = new EulerChallenge001();
+    EulerChallenge problem = new EulerChallenge006();
 
     if (args.length > 0) {
       String problemClass = EulerChallenge.class.getCanonicalName() + args[0];

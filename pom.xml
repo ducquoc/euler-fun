@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>vn.ducquoc.euler</groupId>
+  <artifactId>euler-parent</artifactId>
+  <version>0.2.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>ProjectEuler fun - parent</name>
+  <url>http://github.com/ducquoc/euler-fun</url>
+  <description>See https://github.com/ducquoc/euler-fun</description>
+
+  <modules>
+    <module>euler</module>
+    <module>euler-rb</module>
+  </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <!--<version>2.3.2</version>-->
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <!--<showWarnings>false</showWarnings>-->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <developers>
+     <developer>
+        <name>Duc Quoc</name>
+        <email>ducquoc.vn@gmail.com</email>
+        <timezone>+7</timezone>
+     </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+</project>
