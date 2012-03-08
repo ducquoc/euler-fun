@@ -13,7 +13,7 @@ public class EulerRbMain {
 
   public static final String SOLVE_ME_FUNCTION = "solve_me";
 
-  private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(EulerMain.class);
+  private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(EulerRbMain.class);
 
   private static final ScriptEngine SCRIPT_ENGINE = new ScriptEngineManager().getEngineByName("jruby");
 

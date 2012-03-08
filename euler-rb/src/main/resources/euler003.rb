@@ -1,8 +1,8 @@
 #### Finds the largest prime factor of 600 851 475 143
 
 def solve_me(obj, *args)
-  sum = doLessEngineering
-  puts sum
+  result = doLessEngineering
+  puts result
 end
 
 def doStraightImmediately # S.I

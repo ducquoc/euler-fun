@@ -1,8 +1,8 @@
 #### Finds the sum of (unique) multiples of 3 or 5 in first 1000 numbers
 
 def solve_me(obj, *args)
-  sum = doLessEngineering
-  puts sum
+  result = doLessEngineering
+  puts result
 end
 
 def doStraightImmediately # S.I

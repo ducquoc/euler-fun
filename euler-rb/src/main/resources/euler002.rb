@@ -1,8 +1,8 @@
 #### Finds the sum of all even values in Fibonacci sequence which < 4000000
 
 def solve_me(obj, *args)
-  sum = doLessEngineering
-  puts sum
+  result = doLessEngineering
+  puts result
 end
 
 def doStraightImmediately # S.I
