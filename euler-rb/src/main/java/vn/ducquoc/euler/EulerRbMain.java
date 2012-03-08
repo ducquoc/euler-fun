@@ -20,7 +20,7 @@ public class EulerRbMain {
   public static void main(String[] args) throws Exception {
     LOG.info("*** Solve it with S.I M.P L.E in mind. Result:");
 
-    solveMe("001");
+    solveMe("005");
   }
 
   private static void solveMe(String problemNumber) throws Exception {
