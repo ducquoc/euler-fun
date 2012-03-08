@@ -9,7 +9,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 @SuppressWarnings("restriction")
-public class EulerMain {
+public class EulerRbMain {
 
   public static final String SOLVE_ME_FUNCTION = "solve_me";
 
