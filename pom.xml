@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>vn.ducquoc.euler</groupId>
   <artifactId>euler-parent</artifactId>
-  <version>0.2.0-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>ProjectEuler fun - parent</name>
   <url>http://github.com/ducquoc/euler-fun</url>
@@ -11,13 +11,14 @@
   <modules>
     <module>euler</module>
     <module>euler-rb</module>
+    <module>euler-clj</module>
   </modules>
 
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <!--<version>2.3.2</version>-->
+        <version>2.5.1</version>
         <configuration>
           <source>1.5</source>
           <target>1.5</target>

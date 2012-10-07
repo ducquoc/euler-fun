@@ -1,0 +1,12 @@
+euler/target
+euler-clj/target
+euler-rb/target
+.settings
+euler/.classpath
+euler/.project
+euler-clj/.classpath
+euler-clj/.project
+euler-rb/.classpath
+euler-rb/.project
+.project
+euler-rb/target
