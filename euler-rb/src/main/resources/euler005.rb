@@ -10,7 +10,7 @@ def doStraightImmediately # S.I
   primes = [2,3,5,7,11,13,17,19]
 
   factors = primes.map{ |f|
-    f > (limit ||= till**0.5) ? 1 : ( Math.log(20)/Math.log(f) ).to_i
+    f > (limit ||= till**0.5) ? 1 : ( Math.log(till)/Math.log(f) ).to_i
   }
 
   number = 1
