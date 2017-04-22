@@ -7,6 +7,7 @@ Euler-fun euler
 Simple solutions to Euler problems (projecteuler.net). 
 Using Java and JRuby to have better solved time!
 
+<img src="http://projecteuler.net/profile/ducquoc_vn.png"></img>
 
 ### Building from Source
 

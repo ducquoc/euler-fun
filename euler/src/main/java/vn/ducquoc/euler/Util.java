@@ -32,6 +32,13 @@ public class Util {
     return true;
   }
 
+  public static boolean isPrime(String numberText) {
+    if (numberText == null) return false;
+
+    //Long.MAX_VALUE==649657L*92737*337*127*73*7*7;//+30
+    return new java.math.BigInteger(numberText.trim()).isProbablePrime(64);
+  }
+
   public static List<Long> primeFactors(long number) {
     List<Long> factors = new ArrayList<Long>();
     for (long i = 2; i <= number; i++) {
@@ -73,12 +80,16 @@ public class Util {
     return true;
   }
 
-//  public static void main(String[] args) {
+  public static void main(String[] args) {
 //    System.out.println(lowestCommonMultiple(0, 1));
 //    System.out.println(lowestCommonMultiple(1, 9));
 //    System.out.println(lowestCommonMultiple(7, 90));
 //    System.out.println(lowestCommonMultiple(35, 90));
 //    System.out.println(lowestCommonMultiple(-2, 90));
-//  }
+    System.out.println("Prime: " + isPrime("1009"));
+    System.out.println("Prime: " + isPrime(" 1299721 "));
+    System.out.println("Prime: " + isPrime("32416190071"));
+    System.out.println("Prime: " + isPrime("9223372036854775837"));
+  }
 
 }
