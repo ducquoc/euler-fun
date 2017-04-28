@@ -12,7 +12,7 @@ import java.util.List;
 public class Util {
 
   public static long sum1ToN(long number) {
-    return number * (number - 1) / 2;
+    return number * (number + 1) / 2;
   }
 
   public static long sumMultiples(long divisor, long upperBound) {
@@ -50,6 +50,93 @@ public class Util {
     return factors;
   }
 
+  /**
+   * @param num
+   * @return isPrime[i] indicates whether i is prime, for 0 <= i <= n.
+   */
+  public static boolean[] primeProbArr(Number num) {
+    long n = num.longValue();
+    if (n < 0)
+      throw new IllegalArgumentException("Negative array size");
+    boolean[] result = new boolean[(int) (n + 1)];
+    if (n >= 2)
+      result[2] = true;
+    for (int i = 3; i <= n; i += 2)
+      result[i] = true;
+    // Sieve of Eratosthenes
+    for (int i = 3, end = (int) Math.sqrt(n); i <= end; i += 2) {
+      if (result[i]) {
+        // Note: i * i does not overflow
+        for (int j = i * i; j <= n; j += i << 1)
+          result[j] = false;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * @param n
+   * @return prime numbers less than or equal to n, in ascending order.
+   */
+  public static int[] primeIntTo(int n) {
+    boolean[] primeCheckArr = primeProbArr(n);
+    int count = 0;
+    for (boolean b : primeCheckArr) {
+      if (b) {
+        count++;
+      }
+    }
+
+    int[] result = new int[count];
+    for (int i = 0, j = 0; i < primeCheckArr.length; i++) {
+      if (primeCheckArr[i]) {
+        result[j] = i;
+        j++;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * @param n
+   * @return prime numbers less than or equal to n, in ascending order.
+   */
+  public static long[] primeLongTo(long n) {
+    boolean[] primeCheckArr = primeProbArr(n);
+    int count = 0;
+    for (boolean b : primeCheckArr) {
+      if (b) {
+        count++;
+      }
+    }
+
+    long[] result = new long[count];
+    for (int i = 0, j = 0; i < primeCheckArr.length; i++) {
+      if (primeCheckArr[i]) {
+        result[j] = i;
+        j++;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * @param primeOrder
+   * @return prime numbers at the order (-th) up to primeOrder
+   */
+  public static int[] primeNth(Number primeOrder) {
+    int n = primeOrder.intValue();
+    int[] primesNth = new int [n+1];
+    primesNth[0] = 1;// natural index: primesNth[1]=2;
+    for (int i = 1, num=2; i <= n; num++) {
+      if (isPrime(num)) {
+        primesNth[i] = num;
+        i++;
+      }
+    }
+    return primesNth;
+  }
+
   public static long greatestCommonDivisor(long a, long b) {
     if (b == 0)
       return a;
@@ -62,7 +149,7 @@ public class Util {
 
   public static List<Long> distinct(List<Long> source) {
     List<Long> dest = new ArrayList<Long>();
-    for (int i = 0; i < source.size() ; i++) {
+    for (int i = 0, s = source.size(); i < s ; i++) {
       Long num = source.get(i);
       if (!dest.contains(num)) {
         dest.add(num);
@@ -72,12 +159,39 @@ public class Util {
   }
 
   public static boolean isPalindrome(String str) {
-    long strLength = str.length();
+    // return new StringBuilder(str).reverse().toString().equals(str);
+    int strLength = str.length();
     for (int i = 0; i < strLength / 2; i++) {
-      if (str.charAt(i) != str.charAt(str.length() - 1 - i))
+      if (str.charAt(i) != str.charAt(strLength - 1 - i))
         return false;
     }
     return true;
+  }
+
+  public static long phi(long number) {
+    java.util.List<Long> factors = Util.distinct(Util.primeFactors(number));
+    int factorsLength = factors.size(); // unnecessary to check size 0 or 1
+
+    double totientFactor = 1;
+    for (int i = 0; i < factorsLength; i++) {
+      totientFactor = totientFactor * (1 - 1.0 / factors.get(i));
+    }
+    return (long) (totientFactor * number);
+  }
+
+  public static long phiTotient(long number) {
+    long result = number;
+    for (int i = 2; i * i <= number; ++i) {
+      if (number % i == 0) {
+        result -= result / i;
+      }
+      while (number % i == 0)
+        number /= i;
+    }
+    if (number > 1) {
+      result -= result / number;
+    }
+    return result;
   }
 
   public static void main(String[] args) {
@@ -86,8 +200,8 @@ public class Util {
 //    System.out.println(lowestCommonMultiple(7, 90));
 //    System.out.println(lowestCommonMultiple(35, 90));
 //    System.out.println(lowestCommonMultiple(-2, 90));
-    System.out.println("Prime: " + isPrime("1009"));
-    System.out.println("Prime: " + isPrime(" 1299721 "));
+    System.out.println("Prime: " + isPrime("101"));
+    System.out.println("Prime: " + isPrime(" 103 "));
     System.out.println("Prime: " + isPrime("32416190071"));
     System.out.println("Prime: " + isPrime("9223372036854775837"));
   }

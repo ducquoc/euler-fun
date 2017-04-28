@@ -1,9 +1,12 @@
 package vn.ducquoc.euler;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Finds the minimal path sum, in matrix.txt (80 by 80 matrix), from the top
@@ -12,7 +15,7 @@ import java.io.IOException;
  * @author ducquoc
  * @see <a>http://projecteuler.net/problem=81</a>
  */
-// @SuppressWarnings("unused")
+@SuppressWarnings("unused")
 public class EulerChallenge081 implements EulerChallenge {
 
   public static final int SIZE_081 = 80;
@@ -24,7 +27,7 @@ public class EulerChallenge081 implements EulerChallenge {
 
   private long doStraightImmediately() { // S.I
     long minSum = 0;
-    long[][] matrix = loadFileToMatrix(SIZE_081, SIZE_081, "/" + FILENAME_081);
+    long[][] matrix = loadFileToMatrix(SIZE_081, SIZE_081, FILENAME_081);
 
     long[][] costMatrix = new long[SIZE_081][SIZE_081];
     costMatrix[0][0] = matrix[0][0];
@@ -58,7 +61,9 @@ public class EulerChallenge081 implements EulerChallenge {
     String line = "";
     String[] terms = new String[cols];
     try {
-      BufferedReader buff = new BufferedReader(new FileReader(new File(filepath)));
+      //prefer Resource (InputStreamReader) over File (FileReader), no "/"
+      InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(filepath);
+      BufferedReader buff = new BufferedReader(new InputStreamReader(new DataInputStream(is)));
       for (int i = 0; i < rows && (line = buff.readLine()) != null; i++) {
         terms = line.split(",");
         for (int j = 0; j < cols; j++) {

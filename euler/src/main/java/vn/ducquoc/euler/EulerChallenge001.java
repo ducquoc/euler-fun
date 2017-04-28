@@ -39,18 +39,18 @@ public class EulerChallenge001 implements EulerChallenge {
   }
 
   private long doLessEngineering() { // L.E
-    return sumMultiples(3, MAX_001) + sumMultiples(5, MAX_001) - sumMultiples(15, MAX_001);
+    return sumMultiples(3, MAX_001-1) + sumMultiples(5, MAX_001-1) - sumMultiples(15, MAX_001-1);
   }
 
   //
   // HELPERS
   //
-  private long sumMultiples(long divisor, long upperBound) {
+  private static long sumMultiples(long divisor, long upperBound) {
     return divisor * sum1ToN(upperBound / divisor);
   }
 
-  private long sum1ToN(long number) {
-    return number * (number - 1) / 2;
+  private static long sum1ToN(long number) {
+    return number * (number + 1) / 2;
   }
 
 }
