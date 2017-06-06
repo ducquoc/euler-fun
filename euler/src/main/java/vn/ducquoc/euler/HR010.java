@@ -7,7 +7,7 @@ import java.math.*;
 import java.util.regex.*;
 
 /**
- * <b>//hackerrank.com/contests/projecteuler/challenges/euler007</b>
+ * <b>//hackerrank.com/contests/projecteuler/challenges/euler010</b>
  * 
  * @author ducquoc
  */
@@ -52,7 +52,7 @@ public class HR010 {
     boolean[] primeCheckArr = primeProbArr(n);
 
     long[] primeSum = new long[primeCheckArr.length];
-    for (int i = 2; i < primeCheckArr.length; i++) {
+    for (int i = 2, s = primeCheckArr.length; i < s; i++) {
       primeSum[i] = primeSum[i - 1];
       if (primeCheckArr[i]) {
         primeSum[i] += i;
