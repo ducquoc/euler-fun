@@ -28,9 +28,9 @@ public class EulerSumConjecture {
     String arg0 = (args.length > 0) ? args[0] : "150";
     int n = Integer.parseInt(arg0);
 
-    //doStraightImmediately(n); // S.I ~ 20s
+    doStraightImmediately(n); // S.I ~ 20s
     //doMorePragmatic(n);       // M.P ~ 3s
-    doLessEngineering(n);     // L.E ~ 0.95s
+    //doLessEngineering(n);     // L.E ~ 0.95s
 
     long t2 = System.nanoTime();
     System.out.printf("Elapsed: %.4f ms\n", (t2 - t) / 1000000.0);
