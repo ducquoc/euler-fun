@@ -35,5 +35,4 @@ or
   $ mvn compile exec:java -Dexec.mainClass=vn.ducquoc.euler.EulerMain -Dexec.args="003" -f euler/pom.xml
 ```
 
-See also euler/README.md  
-(euler\README.md)
+See also [euler/README.md](euler/README.md)

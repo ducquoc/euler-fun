@@ -7,7 +7,7 @@ Euler-fun euler
 Simple solutions to Euler problems (projecteuler.net). 
 Using Java and JRuby to have better solved time!
 
-<img src="http://projecteuler.net/profile/ducquoc_vn.png"></img>
+http://projecteuler.net/profile/Zenith.ACM.png
 
 ### Building from Source
 
@@ -26,6 +26,10 @@ Running the JAR will no param to solve Euler001 (https://projecteuler.net/proble
 Running the JAR with param 'NNN' will solve EulerNNN (https://projecteuler.net/problem=NNN)
 
   $ java -jar target/euler-1.0.0-SNAPSHOT.jar 003
+
+Running the JAR using Maven exec plugin: similar to above command
+
+  $ mvn compile exec:java -Dexec.mainClass=vn.ducquoc.euler.EulerMain -Dexec.args="003"
 
 
 #### Sample output
