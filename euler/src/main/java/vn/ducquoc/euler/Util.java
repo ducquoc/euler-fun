@@ -150,6 +150,14 @@ public class Util {
     return a * b / greatestCommonDivisor(a, b);
   }
 
+  public static long integerPow(long a, long b) {
+    long result = 1; //return (b == 0) ? 1 : a * integerPow(a, b - 1);
+    for (long i = 0; i < b; i++) {
+      result *= a;
+    }
+    return result;
+  }
+
   public static List<Long> distinct(List<Long> source) {
     List<Long> dest = new ArrayList<Long>();
     for (int i = 0, s = source.size(); i < s ; i++) {
