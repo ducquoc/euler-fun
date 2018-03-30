@@ -6,7 +6,7 @@ Euler-fun
 
 Have fun coding with Euler problems (projecteuler.net). 
 
-<img src="http://projecteuler.net/profile/ducquoc_vn.png"></img>
+http://projecteuler.net/profile/Zenith.ACM.png
 
 Actually the PE does not requires much coding knowledge, but rather some Math background. Then we can apply some more techniques to get more efficient results.
 

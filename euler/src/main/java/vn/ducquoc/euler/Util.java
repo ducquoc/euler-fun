@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Helper class for solving the problems in <b>ProjectEuler</b>.
+ * Helper class for solving the problems in <b><a href="http://projecteuler.net">ProjectEuler</a></b>.
  * 
  * @author ducquoc
- * @see <a>http://projecteuler.net</a>
+ *
+ * @see vn.ducquoc.jutil.MathUtil
+ * @see org.apache.commons.math.util.MathUtils
+ * @see com.google.common.MathUtil
  */
 public class Util {
 
