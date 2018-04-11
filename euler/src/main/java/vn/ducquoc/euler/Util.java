@@ -205,16 +205,94 @@ public class Util {
     return result;
   }
 
+  /**
+   * base ^ exp % mod == retVal
+   */
+  public static long integerModPow(long base, long exp, long mod) {
+    if (exp == 0)
+      return 1;
+    long p = integerModPow(base, exp / 2, mod) % mod;
+    p = (p * p) % mod;
+    return (exp % 2 == 0) ? p : (base * p) % mod;
+  }
+
+  /**
+   * (base * retVal) % mod == 1 (given mod and base are co-primes)
+   */
+  public static long integerModInverse(long base, long mod) {
+    long i = mod, v = 0, d = 1; // extended Euclid Algorithm Assumption: co-prime gcd(base, mod) = 1
+    while (base > 0) {
+      long t = i / base, x = base; // t is quotient
+      base = i % x; // base is remainder now, Euclid algo
+      i = x;
+      x = d;
+      d = v - t * x; // now update v and d for next loop
+      v = x;
+    }
+    v %= mod; // v should be positive, only v == 0 when mod == 1
+    return (v < 0) ? (v + mod) : v;
+  }
+
+  public static long slowModInverse(long base, long mod) {
+    base = base % mod;
+    for (long x = 1; x < mod; x++)
+      if ((base * x) % mod == 1)
+        return x;
+    return 1;
+  }
+
+  /**
+   * (base * retVal) % mod == 1 (given mod is prime)
+   */
+  public static long primeModInverse(long base, long mod) {
+    long g = greatestCommonDivisor(base, mod);
+    return (g != 1) ? slowModInverse(base, mod) : integerModPow(base, mod - 2, mod);
+  }
+
+  public static long sumSquares1ToN(long number) {
+    return number * (number + 1) * (2 * number + 1) / 6;
+  }
+
+  public static long sumSquares1ToN(long number, long mod) {
+    number %= mod;
+    long a1 = number, a2 = number + 1, a3 = 2 * number + 1;
+
+    if (a1 % 2 == 0) a1 >>= 1; else a2 >>= 1; // div 2
+    if (a1 % 3 == 0) a1 /= 3; else if (a2 % 3 == 0) a2 /= 3; else a3 /= 3; // div 3
+
+    return a1 * a2 % mod * a3 % mod; // n*(n+1)*(2*n+1)/6 % mod
+  }
+
+  public static long sumSquaresMod(long n, long mod) {
+    n %= mod;
+    long n1 = n+1, n2 = n+n1;
+
+    switch ((int) (n%6)) {
+      case 0: return n/6 * n1 % mod * n2 % mod;
+      case 1: return n * n1/2 % mod * n2/3 % mod;
+      case 2: return n/2 * n1/3 % mod * n2 % mod;
+      case 3: return n/3 * n1/2 % mod * n2 % mod;
+      case 4: return n/2 * n1 % mod * n2/3 % mod;
+      case 5: return n  * n1/6 % mod * n2 % mod;
+      default: return 0; // unreachable
+    }
+  }
+
   public static void main(String[] args) {
-//    System.out.println(lowestCommonMultiple(0, 1));
-//    System.out.println(lowestCommonMultiple(1, 9));
 //    System.out.println(lowestCommonMultiple(7, 90));
 //    System.out.println(lowestCommonMultiple(35, 90));
 //    System.out.println(lowestCommonMultiple(-2, 90));
-    System.out.println("Prime: " + isPrime("101"));
-    System.out.println("Prime: " + isPrime(" 103 "));
-    System.out.println("Prime: " + isPrime("32416190071"));
-    System.out.println("Prime: " + isPrime("9223372036854775837"));
+//    System.out.println("Prime: " + isPrime(" 103 "));
+//    System.out.println("Prime: " + isPrime("32416190071"));
+//    System.out.println("Prime: " + isPrime("9223372036854775837"));
+    System.out.println("modPow: " + integerModPow(7, 2, 20)); // 7^2 mod 20 == 9
+    System.out.println("modPow: " + integerModPow(5, 3, 20)); // 5^3 mod 20 == 5
+    System.out.println("modPow: " + integerModPow(-16, 8, 800)); // (-16)^8 mod 800 == 96
+    System.out.println("modInverse: " + integerModInverse(7, 20)); // 7*3 mod 20 == 1
+    System.out.println("modInverse: " + integerModInverse(3, 11)); // 3*4 mod 11 == 1
+    System.out.println("modInverse: " + integerModInverse(42, 2017)); // 42*1969 mod 2017 == 1
+    System.out.println("sumSquares: " + sumSquares1ToN(5)); // 1^2 + 2^2 + 3^2 + 4^2 + 5^2
+    System.out.println("sumSquaresMod: " + sumSquares1ToN(5, 7)); // (1^2 + 2^2 + 3^2 + 4^2 + 5^2) % 7
   }
 
 }
