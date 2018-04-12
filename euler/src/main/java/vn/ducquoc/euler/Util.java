@@ -206,6 +206,22 @@ public class Util {
   }
 
   /**
+   * C(n,k) == n! / ((k!) * (n-k)!)
+   */
+  public static long binomialNChooseK(long n, long k) {
+    long res = 1;
+    long base = 1;
+    for (long i = 1; i <= k; i++) base *= i;
+    for (long i = 1; i <= k; i++) {
+      res *= (n + 1 - i);
+      long gcd = greatestCommonDivisor(res, base);
+      base /= gcd;
+      res /= gcd;
+    }
+    return res;
+  }
+
+  /**
    * base ^ exp % mod == retVal
    */
   public static long integerModPow(long base, long exp, long mod) {
@@ -281,10 +297,10 @@ public class Util {
   public static void main(String[] args) {
 //    System.out.println(lowestCommonMultiple(7, 90));
 //    System.out.println(lowestCommonMultiple(35, 90));
-//    System.out.println(lowestCommonMultiple(-2, 90));
 //    System.out.println("Prime: " + isPrime(" 103 "));
 //    System.out.println("Prime: " + isPrime("32416190071"));
 //    System.out.println("Prime: " + isPrime("9223372036854775837"));
+    System.out.println("binomial coefficient: " + binomialNChooseK(11, 3));
     System.out.println("modPow: " + integerModPow(7, 2, 20)); // 7^2 mod 20 == 9
     System.out.println("modPow: " + integerModPow(5, 3, 20)); // 5^3 mod 20 == 5
     System.out.println("modPow: " + integerModPow(-16, 8, 800)); // (-16)^8 mod 800 == 96
