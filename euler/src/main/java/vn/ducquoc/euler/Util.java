@@ -142,7 +142,7 @@ public class Util {
 
   public static long greatestCommonDivisor(long a, long b) {
     if (b == 0)
-      return a;
+      return a; // assumption a > b, otherwise return non-zero: if (a == 0 || b == 0) return a+b;
     return greatestCommonDivisor(b, a % b);
   }
 
@@ -294,6 +294,51 @@ public class Util {
     }
   }
 
+  public static long sumGcd(long n) { // not very optimal yet, can be improved
+    int[] array = new int[(int) n + 1]; // array[0] ignored
+
+    for (int i = 1; i <= n / 2; i++) {
+      if (n % i == 0) {
+        for (int j = i; j <= n; j += i) {
+          array[j] = i;
+        }
+      }
+    }
+
+    long sum = n;
+    for (int i = 1; i < n; i++) {
+      sum += array[i];
+    }
+
+    return sum;
+  }
+
+  public static long sumGcdSummation(long n) { // not very optimal yet, can be improved
+    long result = 0;
+    for (long i = 1; i <= n; i++) {
+      result = (result + phiTotient(i) * sum1ToN(n / i));
+    }
+
+    return result;
+  }
+
+  public static long[] phiTotientArr(long n) {
+    long[] phi = new long[(int) (n + 1)];
+    phi[1] = 1;
+    for (int i = 2; i < n; i++) {
+      if (phi[i] == 0) {
+        phi[i] = i - 1;
+        for (int j = (i << 1); j < n; j += i) {
+          if (phi[j] == 0)
+            phi[j] = j;
+
+          phi[j] = (phi[j] / i) * (i - 1);
+        }
+      }
+    }
+    return phi;
+  }
+
   public static void main(String[] args) {
 //    System.out.println(lowestCommonMultiple(7, 90));
 //    System.out.println(lowestCommonMultiple(35, 90));
@@ -309,6 +354,7 @@ public class Util {
     System.out.println("modInverse: " + integerModInverse(42, 2017)); // 42*1969 mod 2017 == 1
     System.out.println("sumSquares: " + sumSquares1ToN(5)); // 1^2 + 2^2 + 3^2 + 4^2 + 5^2
     System.out.println("sumSquaresMod: " + sumSquares1ToN(5, 7)); // (1^2 + 2^2 + 3^2 + 4^2 + 5^2) % 7
+    System.out.println("sumGcdSummation: " + sumGcdSummation(10));
   }
 
 }
