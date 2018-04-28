@@ -1,7 +1,9 @@
 package vn.ducquoc.euler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Helper class for solving the problems in <b><a href="http://projecteuler.net">ProjectEuler</a></b>.
@@ -339,6 +341,61 @@ public class Util {
     return phi;
   }
 
+  public static Map<Long,Long> phiTotientSieve(long length) {
+    HashMap<Long,Long> phiTotientLookup = new HashMap<Long, Long>();
+    for (long i = 0; i <= length; i++)
+      phiTotientLookup.put(i, i);
+    for (long i = 2; i <= length; i++) {
+      if (phiTotientLookup.get(i) == i) {
+        phiTotientLookup.put(i, i - 1);
+        for (long j = i + i; j <= length; j += i) {
+          phiTotientLookup.put(j, phiTotientLookup.get(j) / i);
+          phiTotientLookup.put(j, phiTotientLookup.get(j) * (i - 1));
+        }
+      }
+    }
+    return phiTotientLookup;
+  }
+
+  public static int mobiusSquareFree(long n) {
+    if (n == 1) return 1;
+
+    long p = 0;
+    if (n % 2 == 0) {
+      n = n / 2;
+      p++;
+
+      // If 2^2 also divides N
+      if (n % 2 == 0)
+        return 0;
+    }
+
+    for (int i = 3; i <= n; i = i + 2) {
+      if (n % i == 0) {
+        n = n / i;
+        p++;
+
+        // If i^2 also divides N
+        if (n % i == 0)
+          return 0;
+      }
+    }
+
+    // All prime factors are contained only once Return 1 if p is even else -1
+    return (p % 2 != 0) ? -1 : 1;
+  }
+
+  public static long sumPhiTotient(long number) {
+    long result = 0;
+    for (int i = 1; i <= number; i++) {
+      result += phiTotient(i);
+      //result += sum1ToN(number / i) * mobiusSquareFree(i);
+      //result += phiTotientLookup.get(i);
+    }
+
+    return result;
+  }
+
   public static void main(String[] args) {
 //    System.out.println(lowestCommonMultiple(7, 90));
 //    System.out.println(lowestCommonMultiple(35, 90));
@@ -355,6 +412,8 @@ public class Util {
     System.out.println("sumSquares: " + sumSquares1ToN(5)); // 1^2 + 2^2 + 3^2 + 4^2 + 5^2
     System.out.println("sumSquaresMod: " + sumSquares1ToN(5, 7)); // (1^2 + 2^2 + 3^2 + 4^2 + 5^2) % 7
     System.out.println("sumGcdSummation: " + sumGcdSummation(10));
+    System.out.println("phiTotient: " + phiTotient(10));
+    System.out.println("sumPhiTotient: " + sumPhiTotient(10));
   }
 
 }
