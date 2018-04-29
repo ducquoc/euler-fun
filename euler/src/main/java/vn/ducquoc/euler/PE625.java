@@ -2,6 +2,8 @@ package vn.ducquoc.euler;
 
 import java.math.*;
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * <h2>Gcd sum</h2>
@@ -12,7 +14,7 @@ import java.util.*;
 @SuppressWarnings("unused")
 public class PE625 {
 
-  public static long MAX_N = (long) 1e7; //100_000_000_000L;
+  public static long MAX_N = (long) 1e11; //100_000_000_000L;
   public static long MOD_PRIME = 998244353; //1000_000_009L;
 
   public static void main(String[] args) {
@@ -20,7 +22,7 @@ public class PE625 {
     System.out.println("G(10)=" + calcG(10, MOD_PRIME));
 
     long start = System.nanoTime();
-    long result = calcG(MAX_N, MOD_PRIME); // 2^64 or 10^11 is easier for Python/StdC++ than Java (64-bit long)
+    long result = calcG(MAX_N, MOD_PRIME); // 30s - 60s on my laptop
     System.out.println("Time in milliseconds: " + (System.nanoTime() - start) / 1e6);
     System.out.println(new Object() {}.getClass().getEnclosingClass().getSimpleName() + ": " + result);
   }
@@ -55,12 +57,15 @@ G(100e8)=288516859
 
   public static long sumGcdSummationModR(long number, long mod) { // Reality
     long result = 0;
+    BiFunction<Long, Long, Long> memoizeFunct = Util.Memoizer.memoize((n, k) -> sumPhiTotientMod(n, k));
     BigInteger bigRes = BigInteger.ZERO;
     BigInteger MOD = BigInteger.valueOf(mod);
     long sqrtN = (long) Math.sqrt(number);
     for (long i = 1; i <= sqrtN; i++) {
       //result = (result + i * cacheSums(number / i) % mod) % mod;
-      bigRes = bigRes.add(BigInteger.valueOf(i).multiply(BigInteger.valueOf(cacheSums(number / i))));
+      bigRes = bigRes.add(BigInteger.valueOf(i).
+              multiply(BigInteger.valueOf(memoizeFunct.apply(number / i, mod)))
+      );
       //bigRes = bigRes.mod(MOD);
     }
     long sqrtRemainder = number / sqrtN, iNext = number, iMemoize; // memoize trick, same as in PE401 sumSigma2
@@ -68,8 +73,8 @@ G(100e8)=288516859
       iMemoize = iNext; // faster than using array/map for pair (n/i) and n/(i+1)
       iNext = number / (i + 1);
       //result = (result + cacheSums(i) % mod * ((iMemoize + iNext + 1) * (iMemoize - iNext)) / 2 % mod) % mod;
-      bigRes = bigRes.add(BigInteger.valueOf(cacheSums(i))
-              .multiply(BigInteger.valueOf(iMemoize).add(BigInteger.valueOf(iNext).add(BigInteger.ONE))
+      bigRes = bigRes.add(BigInteger.valueOf(memoizeFunct.apply(i, mod))
+              .multiply(BigInteger.valueOf(iMemoize + iNext + 1)
                       .multiply(BigInteger.valueOf(iMemoize - iNext))
                       .divide(BigInteger.valueOf(2)))
               );
@@ -105,7 +110,7 @@ G(100e8)=288516859
         BigInteger iNext = BigInteger.valueOf(number / (i + 1));
         bigRes = bigRes.subtract(BigInteger.valueOf(cacheSums(i)).multiply(iMemoize.subtract(iNext)));
       }
-      result = bigRes.longValue();
+      result = bigRes.mod(BigInteger.valueOf(MOD_PRIME)).longValue();
     }
     v = result;
     mertensLookup.put(number, v);
@@ -292,6 +297,35 @@ G(100e8)=288516859
       return (number / 2 % mod) * ((number + 1) % mod) % mod;
     }
     return ((number + 1) / 2 % mod) * (number % mod) % mod;
+  }
+
+  public static long sumPhiTotientMod(long number, long mod) {
+    long result = 0;
+    long sqrtN = (long) Math.sqrt(number);
+    if (number < Integer.MAX_VALUE) { // 2^64 or 10^11 is easier for  Python/StdC++ than Java (64-bit long)
+      result = number * (number + 1) / 2;
+      for (long i = 2; i <= sqrtN; i++) {
+        result -= cacheSums(number / i);
+      }
+      for (long i = 1; i < number / sqrtN; i++) {
+        result -= cacheSums(i) * (number / i - number / (i + 1));
+      }
+      result %= mod;
+    } else { // I hate this long limitation - 3x performance degradation - but has to live with it for now
+      BigInteger bigNum = BigInteger.valueOf(number);
+      BigInteger bigRes = bigNum.multiply(BigInteger.ONE.add(bigNum)).divide(BigInteger.valueOf(2));
+      for (long i = 2; i <= sqrtN; i++) {
+        bigRes = bigRes.subtract(BigInteger.valueOf(cacheSums(number / i)));
+      }
+      for (long i = 1; i < number / sqrtN; i++) {
+        BigInteger iMemoize = BigInteger.valueOf(number / i);
+        BigInteger iNext = BigInteger.valueOf(number / (i + 1));
+        bigRes = bigRes.subtract(BigInteger.valueOf(cacheSums(i)).multiply(iMemoize.subtract(iNext)));
+      }
+      result = bigRes.mod(BigInteger.valueOf(mod)).longValue();
+    }
+
+    return result;
   }
 
   public static void printR(Object... varArgs) {

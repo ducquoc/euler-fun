@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Helper class for solving the problems in <b><a href="http://projecteuler.net">ProjectEuler</a></b>.
@@ -396,24 +400,78 @@ public class Util {
     return result;
   }
 
+  public static long factorial(long n) {
+    long result = 1, recursivePart = n;
+    while (recursivePart-- > 1) {
+      result = result * recursivePart;
+    }
+    return result;
+  }
+
   public static void main(String[] args) {
 //    System.out.println(lowestCommonMultiple(7, 90));
 //    System.out.println(lowestCommonMultiple(35, 90));
 //    System.out.println("Prime: " + isPrime(" 103 "));
 //    System.out.println("Prime: " + isPrime("32416190071"));
 //    System.out.println("Prime: " + isPrime("9223372036854775837"));
-    System.out.println("binomial coefficient: " + binomialNChooseK(11, 3));
-    System.out.println("modPow: " + integerModPow(7, 2, 20)); // 7^2 mod 20 == 9
-    System.out.println("modPow: " + integerModPow(5, 3, 20)); // 5^3 mod 20 == 5
-    System.out.println("modPow: " + integerModPow(-16, 8, 800)); // (-16)^8 mod 800 == 96
-    System.out.println("modInverse: " + integerModInverse(7, 20)); // 7*3 mod 20 == 1
-    System.out.println("modInverse: " + integerModInverse(3, 11)); // 3*4 mod 11 == 1
-    System.out.println("modInverse: " + integerModInverse(42, 2017)); // 42*1969 mod 2017 == 1
-    System.out.println("sumSquares: " + sumSquares1ToN(5)); // 1^2 + 2^2 + 3^2 + 4^2 + 5^2
-    System.out.println("sumSquaresMod: " + sumSquares1ToN(5, 7)); // (1^2 + 2^2 + 3^2 + 4^2 + 5^2) % 7
-    System.out.println("sumGcdSummation: " + sumGcdSummation(10));
-    System.out.println("phiTotient: " + phiTotient(10));
-    System.out.println("sumPhiTotient: " + sumPhiTotient(10));
+//    System.out.println("binomial coefficient: " + binomialNChooseK(11, 3));
+//    System.out.println("modPow: " + integerModPow(7, 2, 20)); // 7^2 mod 20 == 9
+//    System.out.println("modPow: " + integerModPow(5, 3, 20)); // 5^3 mod 20 == 5
+//    System.out.println("modPow: " + integerModPow(-16, 8, 800)); // (-16)^8 mod 800 == 96
+//    System.out.println("modInverse: " + integerModInverse(7, 20)); // 7*3 mod 20 == 1
+//    System.out.println("modInverse: " + integerModInverse(3, 11)); // 3*4 mod 11 == 1
+//    System.out.println("modInverse: " + integerModInverse(42, 2017)); // 42*1969 mod 2017 == 1
+//    System.out.println("sumSquares: " + sumSquares1ToN(5)); // 1^2 + 2^2 + 3^2 + 4^2 + 5^2
+//    System.out.println("sumSquaresMod: " + sumSquares1ToN(5, 7)); // (1^2 + 2^2 + 3^2 + 4^2 + 5^2) % 7
+//    System.out.println("sumGcdSummation: " + sumGcdSummation(10));
+//    System.out.println("phiTotient: " + phiTotient(10));
+//    System.out.println("sumPhiTotient: " + sumPhiTotient(10));
+
+    Function<Long, Long> factorialFunct = Util::factorial;
+    Function<Long, Long> testMemoFunct = Util.Memoizer.memoize(factorialFunct);
+    System.out.println("memoizeFunc(5)= " + testMemoFunct.apply(5L));
+    System.out.println("memoizeFunc(5)= " + testMemoFunct.apply(5L));
+    Memoizer<Long, Long> testMemoizer = Util.Memoizer.fromFunction(n -> Util.factorial(n));
+    System.out.println("memoizeGet(6)= " + testMemoizer.get(6L));
+    System.out.println("memoizeGet(6)= " + testMemoizer.get(6L));
+  }
+
+  public static class Memoizer<T, R> {
+
+    private Function<T, R> internalFunction;
+    protected final Map<T, R> lookup = new ConcurrentHashMap<>();
+    private Function<T, R> memoizeInternal(final Function<T, R> function) { //separate instance, not static
+      internalFunction = function;
+      return input -> lookup.computeIfAbsent(input, internalFunction::apply);
+    }
+
+    public static <T, R> Function<T, R> memoize(final Function<T, R> function) { //expose static method
+      Memoizer instance = new Memoizer<T, R>();
+      return instance.memoizeInternal(function);
+    }
+
+    public static <T, R> Memoizer<T, R> fromFunction(final Function<T, R> function) {
+      Memoizer memoizer = new Memoizer<T, R>();
+      memoizer.memoizeInternal(function);
+      return memoizer;
+    }
+
+    public R get(T input) {
+      if (internalFunction != null) lookup.computeIfAbsent(input, internalFunction); // apply(input)
+      return lookup.get(input);
+    }
+
+    // bi-function is equivalent to recursive function to function
+    public static <T1, T2, R> BiFunction<T1, T2, R> memoize(final BiFunction<T1, T2, R> biFunc) {
+      final BiFunction<T1, T2, Supplier<R>> biFuncSupplier = (x, y) -> () -> biFunc.apply(x, y);
+      final Function<T1, Function<T2, R>> transformed
+              = Memoizer.memoize(
+              x -> Memoizer.memoize(
+                      y -> biFuncSupplier.apply(x, y).get()));
+      return (x, y) -> transformed.apply(x).apply(y);
+    }
+
+    // likewise, we can memoize TriFunction<T1,T2,T3,R> instead of Function<T1, Function<T2, Function<T3, R>>>
   }
 
 }
